@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Resources:
+  PrimaryDB:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceIdentifier: primary-postgres
+      Engine: postgres
+      DBInstanceClass: db.t3.micro
+      AllocatedStorage: 20
+      MasterUsername: admin
+      MasterUserPassword: Admin12345
+      BackupRetentionPeriod: 7
+      MultiAZ: false
+      PubliclyAccessible: false
+
+  ReadReplica1:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      SourceDBInstanceIdentifier: !Ref PrimaryDB
+      DBInstanceClass: db.t3.micro
+      Engine: postgres
+      PubliclyAccessible: false
+
+  ReadReplica2:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      SourceDBInstanceIdentifier: !Ref PrimaryDB
+      DBInstanceClass: db.t3.micro
+      Engine: postgres
+      PubliclyAccessible: false
